@@ -1,7 +1,5 @@
 const todoRouter = require("express").Router();
 const {
-  signUpTodo,
-  loginTodo,
   todo_get,
   todo_delete,
   todo_post,
@@ -10,8 +8,8 @@ const {
 todoRouter.get('/',(req,res)=>{
     res.redirect('/todo')
 })
-todoRouter.post("/signup", signUpTodo);
-todoRouter.get("/login", loginTodo);
+// todoRouter.post("/signup", signUpTodo);
+// todoRouter.get("/login", loginTodo);
 todoRouter.get("/todo", todo_get);
 todoRouter.post("/todo", todo_post);
 todoRouter.patch("/todo/:id", todo_update);

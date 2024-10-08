@@ -25,3 +25,5 @@ app.use("/", todoRouter);
 app.use((req, res) => {
   res.send("<h1>404 page not found</h1>");
 });
+
+module.exports = {app}

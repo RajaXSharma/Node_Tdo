@@ -1,13 +1,22 @@
-const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const DB_CONN = async () => {
+const url = process.env.MONGODB_URI;
+const client = new MongoClient(url);
+
+async function DB_CONN() {
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI}/TODO_APP`);
-    console.log("connected");
-  } catch (error) {
-    console.log("error connecting to the database");
-    console.log(error)
-    process.exit(1);
+    await client.connect();
+    const db = client.db("todo_db");
+    const todoCollection = db.collection("todo");
+
+
+
+    console.log("connected succesfully to db");
+  } catch (err) {
+    console.log("failed to connect error :", err.stack);
   }
-};
-module.exports = { DB_CONN };
+}
+
+module.exports = { DB_CONN , client };

@@ -1,12 +1,3 @@
-const signUpTodo = async (req, res) => {
-  const { name, email, password } = req.body;
-  console.log(name, email, password);
-};
-
-const loginTodo = () => {
-  console.log("login");
-};
-
 const todo_get = () => {
   console.log("get the todos");
 };
@@ -24,8 +15,6 @@ const todo_delete = () => {
 };
 
 module.exports = {
-  signUpTodo,
-  loginTodo,
   todo_get,
   todo_delete,
   todo_post,
