@@ -8,10 +8,8 @@ const todoCol = db.collection("todo");
 const todo_get = async (req, res) => {
   try {
     const fetchedTodo = await todoCol.find({}).toArray();
-    // console.log(fetchedTodo)
     res.status(200).json(fetchedTodo);
   } catch (error) {
-    // console.log(err);
     res.status(500).json({
       message: "some error occured while fetching todo",
       error: err,
@@ -37,7 +35,6 @@ const todo_post = async (req, res) => {
   // insert into database
   try {
     const result = await todoCol.insertOne(todo);
-    console.log(result);
     res.status(201).json(result);
   } catch (error) {
     console.log("error while inserting todo in db", error);
@@ -72,7 +69,6 @@ const todo_update = async (req, res) => {
       _id: id,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "some server error occured try again",
       error: error,
@@ -91,7 +87,6 @@ const todo_delete = async (req, res) => {
       message: "successfully deleted the todo",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "error while deleting try again",
       error: error,
