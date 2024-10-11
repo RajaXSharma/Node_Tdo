@@ -1,9 +1,9 @@
 //import this for objectID if not it will give object error
 const { ObjectId } = require("mongodb");
-
 const { client } = require("../configs/db.config.js");
 const db = client.db("todo_db");
 const todoCol = db.collection("todo");
+
 // get todo from database
 const todo_get = async (req, res) => {
   try {
@@ -20,7 +20,7 @@ const todo_get = async (req, res) => {
 };
 
 // post todo to database
-async function todo_post(req, res) {
+const todo_post = async (req, res) => {
   const { title, body } = req.body;
   console.log(req.body);
   if (!title) {
@@ -42,7 +42,7 @@ async function todo_post(req, res) {
   } catch (error) {
     console.log("error while inserting todo in db", error);
   }
-}
+};
 
 // update todo
 const todo_update = async (req, res) => {
@@ -81,7 +81,7 @@ const todo_update = async (req, res) => {
 };
 
 // delete todo
-const todo_delete = async (req , res) => {
+const todo_delete = async (req, res) => {
   const { id } = req.params;
   const objectID = new ObjectId(id);
 
