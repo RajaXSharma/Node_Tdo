@@ -47,7 +47,7 @@ async function todo_post(req, res) {
 // update todo
 const todo_update = async (req, res) => {
   const { id } = req.params;
-  const objectID = new ObjectId(id)
+  const objectID = new ObjectId(id);
   const { title, body, completed } = req.body;
   if (!title) {
     res.status(400).json({
@@ -71,7 +71,6 @@ const todo_update = async (req, res) => {
       message: "todo updated successfully",
       _id: id,
     });
-    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -82,8 +81,22 @@ const todo_update = async (req, res) => {
 };
 
 // delete todo
-const todo_delete = () => {
-  console.log("delete todo");
+const todo_delete = async (req , res) => {
+  const { id } = req.params;
+  const objectID = new ObjectId(id);
+
+  try {
+    const result = await todoCol.deleteOne({ _id: objectID });
+    res.status(200).json({
+      message: "successfully deleted the todo",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "error while deleting try again",
+      error: error,
+    });
+  }
 };
 
 module.exports = {
