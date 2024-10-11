@@ -1,14 +1,15 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { DB_CONN } = require("./configs/db.config");
+const { DB_CONN, client } = require("./configs/db.config");
 const todoRouter = require("./routes/todoRoutes");
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));app.use(express.urlencoded({ extended: true, limit: "20kb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 
 DB_CONN()
   .then(() => {
@@ -26,4 +27,11 @@ app.use((req, res) => {
   res.send("<h1>404 page not found</h1>");
 });
 
-module.exports = {app}
+
+process.on("SIGINT", () => {
+  client.close().then(() => {
+    console.log("database closed");
+  });
+});
+
+module.exports = { app };

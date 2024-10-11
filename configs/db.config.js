@@ -8,11 +8,6 @@ const client = new MongoClient(url);
 async function DB_CONN() {
   try {
     await client.connect();
-    const db = client.db("todo_db");
-    const todoCollection = db.collection("todo");
-
-
-
     console.log("connected succesfully to db");
   } catch (err) {
     console.log("failed to connect error :", err.stack);
