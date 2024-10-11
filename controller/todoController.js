@@ -1,6 +1,5 @@
 //import this for objectID if not it will give object error
-const ObjectId = require("mongodb").ObjectId;
-
+const { ObjectId } = require("mongodb");
 
 const { client } = require("../configs/db.config.js");
 const db = client.db("todo_db");
@@ -48,7 +47,7 @@ async function todo_post(req, res) {
 // update todo
 const todo_update = async (req, res) => {
   const { id } = req.params;
-  const objectID = new ObjectId(id);
+  const objectID = new ObjectId(id)
   const { title, body, completed } = req.body;
   if (!title) {
     res.status(400).json({
@@ -57,16 +56,26 @@ const todo_update = async (req, res) => {
     });
   }
 
+  //update 1 document
+
   try {
-    const updatedTodo = await todoCol.updateOne({_id:objectID}, {
-      $set: { title: title, body: body, completed: completed },
-    });
+    const updatedTodo = await todoCol.updateOne(
+      { _id: objectID },
+      {
+        $set: { title: title, body: body, completed: completed },
+      }
+    );
 
     console.log(updatedTodo);
+    res.status(200).json({
+      message: "todo updated successfully",
+      _id: id,
+    });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "some server error occured",
+      message: "some server error occured try again",
       error: error,
     });
   }
