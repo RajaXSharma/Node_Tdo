@@ -1,8 +1,9 @@
 const authRouter = require("express").Router();
 
-const { todoLogin, todoSignup } = require("../controller/authController.js");
+const { todoLogin, todoSignup , logout } = require("../controller/authController.js");
 
 authRouter.post("/login", todoLogin);
 authRouter.post("/signup", todoSignup);
+authRouter.post("/logout", logout);
 
-module.exports = authRouter
+module.exports = authRouter;

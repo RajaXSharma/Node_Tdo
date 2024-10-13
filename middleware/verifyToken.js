@@ -8,8 +8,8 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
-    console.log(decoded);
     req.user = decoded._id;
+    next()
   } catch (error) {
     return res.status(500).json({
       message: "server error",

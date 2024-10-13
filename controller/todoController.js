@@ -6,8 +6,10 @@ const todoCol = db.collection("todo");
 
 // get todo from database
 const todo_get = async (req, res) => {
+  const _id = req.user;
+
   try {
-    const fetchedTodo = await todoCol.find({}).toArray();
+    const fetchedTodo = await todoCol.find({ userId: _id }).toArray();
     res.status(200).json(fetchedTodo);
   } catch (error) {
     res.status(500).json({
@@ -20,10 +22,10 @@ const todo_get = async (req, res) => {
 // post todo to database
 const todo_post = async (req, res) => {
   const { title, body } = req.body;
-  console.log(req.body);
+  const _id = req.user;
   if (!title) {
     res.status(400).json({
-      error: "reqire Title field",
+      error: "require Title field",
     });
   }
 
@@ -31,21 +33,25 @@ const todo_post = async (req, res) => {
     title,
     body,
     completed: false,
+    userId: _id,
   };
   // insert into database
   try {
     const result = await todoCol.insertOne(todo);
     res.status(201).json(result);
   } catch (error) {
-    console.log("error while inserting todo in db", error);
+    return res.status(500).json({
+      message: "error while adding todo try again",
+      error,
+    });
   }
 };
 
 // update todo
 const todo_update = async (req, res) => {
   const { id } = req.params;
-  const objectID = new ObjectId(id);
   const { title, body, completed } = req.body;
+  const objectId = new ObjectId(id);
   if (!title) {
     res.status(400).json({
       message: "please give title",
@@ -53,17 +59,14 @@ const todo_update = async (req, res) => {
     });
   }
 
-  //update 1 document
-
+  //update document
   try {
     const updatedTodo = await todoCol.updateOne(
-      { _id: objectID },
+      { _id: objectId },
       {
         $set: { title: title, body: body, completed: completed },
       }
     );
-
-    console.log(updatedTodo);
     res.status(200).json({
       message: "todo updated successfully",
       _id: id,
@@ -79,10 +82,10 @@ const todo_update = async (req, res) => {
 // delete todo
 const todo_delete = async (req, res) => {
   const { id } = req.params;
-  const objectID = new ObjectId(id);
+  const objectId = new ObjectId(id);
 
   try {
-    const result = await todoCol.deleteOne({ _id: objectID });
+    const result = await todoCol.deleteOne({ _id: objectId });
     res.status(200).json({
       message: "successfully deleted the todo",
     });

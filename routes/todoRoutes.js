@@ -5,12 +5,15 @@ const {
   todo_post,
   todo_update,
 } = require("../controller/todoController");
-todoRouter.get('/',(req,res)=>{
-    res.redirect('/todo')
-})
-todoRouter.get("/todo", todo_get);
-todoRouter.post("/todo", todo_post);
-todoRouter.patch("/todo/:id", todo_update);
-todoRouter.delete("/todo/:id", todo_delete);
+
+const verifyToken = require("../middleware/verifyToken");
+
+todoRouter.get("/", (req, res) => {
+  res.redirect("/todo");
+});
+todoRouter.get("/todo",verifyToken, todo_get);
+todoRouter.post("/todo",verifyToken, todo_post);
+todoRouter.patch("/todo/:id",verifyToken, todo_update);
+todoRouter.delete("/todo/:id",verifyToken, todo_delete);
 
 module.exports = todoRouter;
