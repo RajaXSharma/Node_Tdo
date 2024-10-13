@@ -2,6 +2,14 @@ const { client } = require("../configs/db.config");
 const db = client.db("todo_db");
 const userCollection = db.collection("user");
 const bcrypt = require("bcrypt");
+const genToken = require("../Utils/genToken");
+
+// cookies options
+const options = {
+  httpOnly: true,
+  sameSite: "strict",
+  maxAge: 3600000,
+};
 
 const todoLogin = async (req, res) => {
   res.json("login");
@@ -16,7 +24,6 @@ const todoSignup = async (req, res) => {
   }
 
   try {
-
     // check if user exists already
     const userExists = await userCollection.findOne({ email });
     if (userExists) {
@@ -29,11 +36,12 @@ const todoSignup = async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     // save to the database
-    const user = await userCollection.insertOne({ email, password:hash });
+    const user = await userCollection.insertOne({ email, password: hash });
 
-    //generate token & send to the client
+    //generate token
+    const token = await genToken(user.insertedId);
 
-    return res.status(200).json({
+    return res.cookie("token", token, options).status(200).json({
       message: "user created successfully",
     });
   } catch (error) {
