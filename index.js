@@ -3,13 +3,13 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const { DB_CONN, client } = require("./configs/db.config");
 const todoRouter = require("./routes/todoRoutes");
+const authRouter = require("./routes/authRoutes");
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 
 DB_CONN()
   .then(() => {
@@ -21,12 +21,14 @@ DB_CONN()
     console.log(err);
   });
 
-app.use("/", todoRouter);
+
+// routes here
+app.use("/api", todoRouter);
+app.use("/api/auth",authRouter)
 
 app.use((req, res) => {
   res.send("<h1>404 page not found</h1>");
 });
-
 
 process.on("SIGINT", () => {
   client.close().then(() => {

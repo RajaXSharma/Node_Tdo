@@ -8,8 +8,6 @@ const {
 todoRouter.get('/',(req,res)=>{
     res.redirect('/todo')
 })
-// todoRouter.post("/signup", signUpTodo);
-// todoRouter.get("/login", loginTodo);
 todoRouter.get("/todo", todo_get);
 todoRouter.post("/todo", todo_post);
 todoRouter.patch("/todo/:id", todo_update);
