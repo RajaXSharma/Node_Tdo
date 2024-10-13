@@ -40,7 +40,7 @@ const todoLogin = async (req, res) => {
     }
 
     //gen token
-    const token = genToken(user._id);
+    const token = await genToken(user._id);
     return res.cookie("token", token, options).status(200).json({
       message: "successfully loggedIn",
     });
@@ -89,7 +89,7 @@ const todoSignup = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-    //set token empty for logout
+  //set token empty for logout
   return res.cookie("token", "").status(200).json({
     message: "logged out",
   });
