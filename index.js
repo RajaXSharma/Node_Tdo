@@ -5,6 +5,7 @@ const { DB_CONN, client } = require("./configs/db.config");
 const todoRouter = require("./routes/todoRoutes");
 const authRouter = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
+const logger = require("./Utils/logger");
 
 dotenv.config();
 const app = express();
@@ -16,11 +17,11 @@ app.use(cookieParser());
 DB_CONN()
   .then(() => {
     app.listen(4000, () => {
-      console.log("running on port 4000");
+      logger.info("server running on port 4000");
     });
   })
   .catch((err) => {
-    console.log(err);
+    logger.error("error while running server :", err);
   });
 
 // routes here
@@ -33,7 +34,7 @@ app.use((req, res) => {
 
 process.on("SIGINT", () => {
   client.close().then(() => {
-    console.log("database closed");
+    logger.info("database closed");
   });
 });
 
