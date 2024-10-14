@@ -1,26 +1,3 @@
-
-// const winston = require('winston');
-// const path = require('path');
-
-// const logger = winston.createLogger({
-//   level: 'info',
-//   format: winston.format.combine(
-//     winston.format.label({ label: path.basename(process.mainModule.filename) }),
-//     winston.format.timestamp(),
-//     winston.format.printf(({ level, message, label, timestamp }) => {
-//       return `${timestamp} [${label}] ${level}: ${message}`;
-//     })
-//   ),
-//   transports: [new winston.transports.Console()],
-// });
-
-// module.exports = logger;
-
-
-
-
-
-
 const winston = require('winston');
 const path = require('path');
 
@@ -37,13 +14,14 @@ const fileAndLineFormat = winston.format((info, opts) => {
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     fileAndLineFormat(),
-    winston.format.timestamp(),
-    winston.format.printf(({ level, message, timestamp, filename, lineNumber }) => {
-      return `${timestamp} [${filename}:${lineNumber}] ${level}: ${message}`;
+    winston.format.colorize({ all: true }),
+    winston.format.printf(({ level, message, filename, lineNumber }) => {
+      return `[${filename}:${lineNumber}] ${level}: ${message}`;
     })
   ),
-  transports: [new winston.transports.Console()],
+  transports: [new winston.transports.Console()]
 });
 
 // Overwrite the logger's log methods to capture stack trace
@@ -68,3 +46,5 @@ const logger = winston.createLogger({
 });
 
 module.exports = logger;
+
+

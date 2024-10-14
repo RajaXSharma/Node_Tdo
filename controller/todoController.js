@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const { client } = require("../configs/db.config.js");
 const db = client.db("todo_db");
 const todoCol = db.collection("todo");
+const logger = require("../Utils/logger.js");
 
 // get todo from database
 const todo_get = async (req, res) => {
@@ -10,11 +11,12 @@ const todo_get = async (req, res) => {
 
   try {
     const fetchedTodo = await todoCol.find({ userId: _id }).toArray();
+
     res.status(200).json(fetchedTodo);
   } catch (error) {
-    res.status(500).json({
+   return res.status(500).json({
       message: "some error occured while fetching todo",
-      error: err,
+      error: error,
     });
   }
 };
