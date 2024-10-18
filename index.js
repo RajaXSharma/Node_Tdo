@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Establishes a database connection and starts a server on port 4000 upon successful connection. Logs any errors encountered during the process.
 DB_CONN()
   .then(() => {
     app.listen(4000, () => {

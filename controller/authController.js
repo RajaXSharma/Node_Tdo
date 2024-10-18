@@ -39,7 +39,7 @@ const todoLogin = async (req, res) => {
       });
     }
 
-    //gen token
+    //gen token and sent to cookies
     const token = await genToken(user._id);
     return res.cookie("token", token, options).status(200).json({
       message: "successfully loggedIn",
